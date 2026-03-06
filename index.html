@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyección Exclusiva - Granada</title>
+    <style>
+        body {
+            background-color: #0d0d0d;
+            color: #e0c097;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .poster-border {
+            border: 2px solid #e0c097;
+            padding: 40px;
+            max-width: 90%;
+            box-shadow: 0 0 20px rgba(224, 192, 151, 0.2);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            letter-spacing: 5px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        input {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #e0c097;
+            color: #fff;
+            font-size: 1.5rem;
+            text-align: center;
+            outline: none;
+            width: 250px;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        button {
+            background: #e0c097;
+            color: #0d0d0d;
+            border: none;
+            padding: 10px 30px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #fff;
+        }
+
+        #mensaje-error {
+            margin-top: 20px;
+            color: #ff6b6b;
+            font-size: 0.9rem;
+            height: 20px;
+        }
+
+        #resultado-final {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 1000;
+        }
+
+        #resultado-final img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="poster-border" id="interfaz-codigo">
+        <h1>Entrada de Cine</h1>
+        <p>Introduce el código final para desbloquear la experiencia</p>
+        
+        <input type="text" id="codigo-input" placeholder="********" autocomplete="off">
+        <br>
+        <button onclick="verificarCodigo()">Validar Ticket</button>
+        
+        <div id="mensaje-error"></div>
+    </div>
+
+    <div id="resultado-final">
+        <img src="TU_IMAGEN_AQUI.jpg" alt="Felicidades">
+    </div>
+
+    <script>
+        function verificarCodigo() {
+            const codigoCorrecto = "rahvwlwy8";
+            const input = document.getElementById('codigo-input').value.toLowerCase().trim();
+            const errorDiv = document.getElementById('mensaje-error');
+            const interfaz = document.getElementById('interfaz-codigo');
+            const resultado = document.getElementById('resultado-final');
+
+            const mensajesError = [
+                "Ese código tiene menos chispa que una peli sin palomitas. ¡Prueba otra vez!",
+                "Casi... pero mi corazón late más fuerte que ese error. ¡Inténtalo de nuevo!",
+                "Error 404: El código no existe, pero mi amor por ti sí. Revisa los apuntes.",
+                "¡Uy! Vagnasus se ha equivocado de hechizo. Mira bien los fragmentos."
+            ];
+
+            if (input === codigoCorrecto) {
+                interfaz.style.display = 'none';
+                resultado.style.display = 'block';
+            } else {
+                const randomMsg = mensajesError[Math.floor(Math.random() * mensajesError.length)];
+                errorDiv.innerText = randomMsg;
+                document.getElementById('codigo-input').value = "";
+            }
+        }
+    </script>
+</body>
+</html>
