@@ -9,6 +9,7 @@
             --dorado: #e0c097;
             --oscuro: #0d0d0d;
             --romantico: #ff4d6d;
+            --verde: #2ecc71;
         }
 
         body {
@@ -20,16 +21,16 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            overflow-x: hidden;
+            overflow: hidden;
             text-align: center;
         }
 
+        /* --- FASE 1: CÓDIGO --- */
         #interfaz-codigo {
             border: 2px solid var(--dorado);
             padding: 40px;
             max-width: 400px;
-            transition: opacity 1s ease;
-            background: rgba(13, 13, 13, 0.9);
+            z-index: 10;
         }
 
         input {
@@ -44,7 +45,7 @@
             margin-bottom: 20px;
         }
 
-        button {
+        .btn-validar {
             background: var(--dorado);
             color: var(--oscuro);
             border: none;
@@ -52,49 +53,72 @@
             font-weight: bold;
             cursor: pointer;
             text-transform: uppercase;
-            border-radius: 5px;
         }
 
+        /* --- FASE 2: PREGUNTA --- */
         #resultado-final {
             display: none;
             opacity: 0;
-            transition: opacity 2s ease;
+            transition: opacity 1.5s ease;
             flex-direction: column;
             align-items: center;
             width: 100%;
-            padding: 20px;
         }
 
         .foto-pareja {
-            width: 280px;
-            height: 280px;
+            width: 250px;
+            height: 250px;
             border-radius: 50%;
             border: 5px solid var(--romantico);
             object-fit: cover;
             box-shadow: 0 0 30px var(--romantico);
-            margin: 20px 0;
+            margin: 15px 0;
             animation: latido 2s infinite;
         }
 
-        h2 {
-            font-size: 2.5rem;
+        h2 { font-size: 2rem; color: white; text-shadow: 0 0 10px var(--romantico); }
+
+        /* --- BOTONES SÍ/NO --- */
+        .contenedor-botones {
+            margin-top: 20px;
+            position: relative;
+            width: 100%;
+            height: 100px;
+        }
+
+        .btn-si {
+            background: var(--verde);
             color: white;
-            text-shadow: 0 0 10px var(--romantico);
-            margin: 10px;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+        }
+
+        .btn-no {
+            background: #95a5a6;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 50px;
+            position: absolute;
+            transition: all 0.2s ease;
         }
 
         @keyframes latido {
-            0% { transform: scale(1); }
+            0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
         }
 
         .corazon {
             position: fixed;
             top: -10px;
             color: var(--romantico);
-            font-size: 20px;
-            user-select: none;
             z-index: 1000;
             animation: caer linear forwards;
         }
@@ -108,55 +132,65 @@
 
     <div id="interfaz-codigo">
         <h1>TICKET DE ACCESO</h1>
-        <p>Introduce el código final para acceder a la proyección</p>
-        <input type="text" id="codigo-input" placeholder="CÓDIGO" autocomplete="off">
+        <p>Introduce el código de Vagnasus</p>
+        <input type="text" id="codigo-input" placeholder="CÓDIGO">
         <br>
-        <button onclick="verificarCodigo()">Validar Entrada</button>
-        <div id="mensaje-error" style="margin-top:20px; color:#ff6b6b; min-height: 40px; font-size: 0.9rem;"></div>
+        <button class="btn-validar" onclick="verificarCodigo()">Validar</button>
+        <div id="mensaje-error" style="margin-top:20px; color:#ff6b6b;"></div>
     </div>
 
     <div id="resultado-final">
         <h2>¿Quieres salir conmigo?</h2>
         <img src="FOTO_CON_EL.jpeg" class="foto-pareja" alt="Nosotros">
-        <p style="color: white; font-size: 1.5rem; font-weight: bold; letter-spacing: 2px;">Albaricoque.</p>
+        <p style="color:white;">Albaricoque.</p>
+        
+        <div class="contenedor-botones">
+            <button class="btn-si" onclick="aceptar()">¡SÍ!</button>
+            <button id="btn-no" class="btn-no" onmouseover="huir(this)">NO</button>
+        </div>
     </div>
 
     <script>
-        function crearCorazon() {
+        function crearCorazon(emoji = '❤️') {
             const corazon = document.createElement('div');
             corazon.classList.add('corazon');
-            corazon.innerText = '❤️';
+            corazon.innerText = emoji;
             corazon.style.left = Math.random() * 100 + 'vw';
-            corazon.style.animationDuration = Math.random() * 3 + 2 + 's';
-            corazon.style.opacity = Math.random();
+            corazon.style.fontSize = (Math.random() * 20 + 20) + 'px';
+            corazon.style.animationDuration = Math.random() * 2 + 2 + 's';
             document.body.appendChild(corazon);
-            setTimeout(() => corazon.remove(), 5000);
+            setTimeout(() => corazon.remove(), 4000);
         }
 
         function verificarCodigo() {
-            const codigoCorrecto = "rahvwlwy8";
             const input = document.getElementById('codigo-input').value.toLowerCase().trim();
-            const errorDiv = document.getElementById('mensaje-error');
-
-            if (input === codigoCorrecto) {
+            if (input === "rahvwlwy8") {
                 document.getElementById('interfaz-codigo').style.display = 'none';
                 const final = document.getElementById('resultado-final');
                 final.style.display = 'flex';
-                setTimeout(() => { final.style.opacity = '1'; }, 100);
-                
-                setInterval(crearCorazon, 300);
+                setTimeout(() => final.style.opacity = '1', 100);
+                setInterval(() => crearCorazon('❤️'), 500);
             } else {
-                const frases = [
-                    "¡Casi! Pero mi heterosexualidad es más real que ese código.",
-                    "Revisa tus notas... ¡tú puedes!",
-                    "Código incorrecto, pero tu sonrisa es de 10.",
-                    "¡Error! Sigue buscando, que el premio vale la pena ;)",
-                    "Luego te como los morros.",
-                    "Me encantas, pero el código que has metido está mal :v"
-                ];
-                errorDiv.innerText = frases[Math.floor(Math.random() * frases.length)];
-                document.getElementById('codigo-input').value = "";
+                const frases = ["¡Casi! Revisa tus notas.", "Código mal, pero tú estás muy bien.", "¡Error! Inténtalo de nuevo."];
+                document.getElementById('mensaje-error').innerText = frases[Math.floor(Math.random() * frases.length)];
             }
+        }
+
+        function huir(boton) {
+            const x = Math.random() * (window.innerWidth - boton.offsetWidth);
+            const y = Math.random() * (window.innerHeight - boton.offsetHeight);
+            boton.style.left = x + 'px';
+            boton.style.top = y + 'px';
+            boton.style.position = 'fixed';
+        }
+
+        function aceptar() {
+            alert("¡SABÍA QUE DIRÍAS QUE SÍ! ❤️");
+            setInterval(() => {
+                crearCorazon('💖');
+                crearCorazon('✨');
+                crearCorazon('🌹');
+            }, 100);
         }
     </script>
 </body>
