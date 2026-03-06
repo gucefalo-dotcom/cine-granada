@@ -3,137 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyección Exclusiva - Granada</title>
+    <title>Proyección Especial - Granada</title>
     <style>
+        :root {
+            --dorado: #e0c097;
+            --oscuro: #0d0d0d;
+            --romantico: #ff4d6d;
+        }
+
         body {
-            background-color: #0d0d0d;
-            color: #e0c097;
+            background-color: var(--oscuro);
+            color: var(--dorado);
             font-family: 'Courier New', Courier, monospace;
+            margin: 0;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
+            min-height: 100vh;
+            overflow-x: hidden;
             text-align: center;
         }
 
-        .poster-border {
-            border: 2px solid #e0c097;
+        /* --- ESTILO ENTRADA CINE --- */
+        #interfaz-codigo {
+            border: 2px solid var(--dorado);
             padding: 40px;
-            max-width: 90%;
-            box-shadow: 0 0 20px rgba(224, 192, 151, 0.2);
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            letter-spacing: 5px;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-
-        p {
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-            font-style: italic;
+            max-width: 400px;
+            transition: opacity 1s ease;
         }
 
         input {
             background: transparent;
             border: none;
-            border-bottom: 2px solid #e0c097;
+            border-bottom: 2px solid var(--dorado);
             color: #fff;
             font-size: 1.5rem;
             text-align: center;
             outline: none;
-            width: 250px;
+            width: 80%;
             margin-bottom: 20px;
-            letter-spacing: 2px;
         }
 
         button {
-            background: #e0c097;
-            color: #0d0d0d;
+            background: var(--dorado);
+            color: var(--oscuro);
             border: none;
-            padding: 10px 30px;
+            padding: 12px 25px;
             font-weight: bold;
             cursor: pointer;
             text-transform: uppercase;
-            transition: 0.3s;
         }
 
-        button:hover {
-            background: #fff;
-        }
-
-        #mensaje-error {
-            margin-top: 20px;
-            color: #ff6b6b;
-            font-size: 0.9rem;
-            height: 20px;
-        }
-
+        /* --- ESTILO ROMÁNTICO (OCULTO AL INICIO) --- */
         #resultado-final {
             display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
+            opacity: 0;
+            transition: opacity 2s ease;
+            flex-direction: column;
+            align-items: center;
             width: 100%;
-            height: 100%;
-            background: #000;
-            z-index: 1000;
         }
 
-        #resultado-final img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+        .foto-pareja {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            border: 5px solid var(--romantico);
+            object-fit: cover;
+            box-shadow: 0 0 30px var(--romantico);
+            margin: 20px 0;
+            animation: latido 2s infinite;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: white;
+            text-shadow: 0 0 10px var(--romantico);
+            margin: 10px;
+        }
+
+        @keyframes latido {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Animación de corazones cayendo */
+        .corazon {
+            position: fixed;
+            top: -10px;
+            color: var(--romantico);
+            font-size: 20px;
+            user-select: none;
+            z-index: 1000;
+            animation: caer linear forwards;
+        }
+
+        @keyframes caer {
+            to { transform: translateY(110vh) rotate(360deg); }
         }
     </style>
 </head>
 <body>
 
-    <div class="poster-border" id="interfaz-codigo">
-        <h1>Entrada de Cine</h1>
-        <p>Introduce el código final para desbloquear la experiencia</p>
-        
-        <input type="text" id="codigo-input" placeholder="********" autocomplete="off">
+    <div id="interfaz-codigo">
+        <h1>🎞️ TICKET DE ACCESO</h1>
+        <p>Introduce el código final de Vagnasus</p>
+        <input type="text" id="codigo-input" placeholder="CÓDIGO" autocomplete="off">
         <br>
-        <button onclick="verificarCodigo()">Validar Ticket</button>
-        
-        <div id="mensaje-error"></div>
+        <button onclick="verificarCodigo()">Validar Entrada</button>
+        <div id="mensaje-error" style="margin-top:20px; color:#ff6b6b; min-height: 40px;"></div>
     </div>
 
     <div id="resultado-final">
-        <img src="TU_IMAGEN_AQUI.jpeg" alt="Felicidades">
+        <h2>¿Quieres salir conmigo?</h2>
+        <img src="FOTO_CON_EL.jpg" class="foto-pareja" alt="Nosotros">
+        <p style="color: white; font-size: 1.2rem;">Has encontrado el código, ahora falta tu respuesta.</p>
     </div>
 
     <script>
+        function crearCorazon() {
+            const corazon = document.createElement('div');
+            corazon.classList.add('corazon');
+            corazon.innerText = '❤️';
+            corazon.style.left = Math.random() * 100 + 'vw';
+            corazon.style.animationDuration = Math.random() * 3 + 2 + 's';
+            corazon.style.opacity = Math.random();
+            document.body.appendChild(corazon);
+            setTimeout(() => corazon.remove(), 5000);
+        }
+
         function verificarCodigo() {
             const codigoCorrecto = "rahvwlwy8";
             const input = document.getElementById('codigo-input').value.toLowerCase().trim();
             const errorDiv = document.getElementById('mensaje-error');
-            const interfaz = document.getElementById('interfaz-codigo');
-            const resultado = document.getElementById('resultado-final');
-
-            const mensajesError = [
-                "Ese código tiene menos chispa que una peli sin palomitas. ¡Prueba otra vez!",
-                "Casi... pero mi corazón late más fuerte que ese error. ¡Inténtalo de nuevo!",
-                "Error 404: El código no existe, pero mi amor por ti sí. Revisa los apuntes.",
-                "¡Uy! Vagnasus se ha equivocado de hechizo. Mira bien los fragmentos."
-            ];
 
             if (input === codigoCorrecto) {
-                interfaz.style.display = 'none';
-                resultado.style.display = 'block';
+                document.getElementById('interfaz-codigo').style.display = 'none';
+                const final = document.getElementById('resultado-final');
+                final.style.display = 'flex';
+                setTimeout(() => { final.style.opacity = '1'; }, 100);
+                
+                // Iniciar lluvia de corazones
+                setInterval(crearCorazon, 300);
             } else {
-                const randomMsg = mensajesError[Math.floor(Math.random() * mensajesError.length)];
-                errorDiv.innerText = randomMsg;
+                const frases = [
+                    "¡Casi! Pero mi amor por ti es más real que ese código.",
+                    "Vagnasus, revisa tus notas... ¡tú puedes!",
+                    "Código incorrecto, pero tu sonrisa es de 10.",
+                    "¡Error! Sigue buscando, que el premio vale la pena."
+                ];
+                errorDiv.innerText = frases[Math.floor(Math.random() * frases.length)];
                 document.getElementById('codigo-input').value = "";
             }
         }
     </script>
 </body>
-
 </html>
