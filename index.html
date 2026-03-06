@@ -24,12 +24,12 @@
             text-align: center;
         }
 
-        /* --- ESTILO ENTRADA CINE --- */
         #interfaz-codigo {
             border: 2px solid var(--dorado);
             padding: 40px;
             max-width: 400px;
             transition: opacity 1s ease;
+            background: rgba(13, 13, 13, 0.9);
         }
 
         input {
@@ -52,9 +52,9 @@
             font-weight: bold;
             cursor: pointer;
             text-transform: uppercase;
+            border-radius: 5px;
         }
 
-        /* --- ESTILO ROMÁNTICO (OCULTO AL INICIO) --- */
         #resultado-final {
             display: none;
             opacity: 0;
@@ -62,6 +62,7 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
+            padding: 20px;
         }
 
         .foto-pareja {
@@ -88,7 +89,6 @@
             100% { transform: scale(1); }
         }
 
-        /* Animación de corazones cayendo */
         .corazon {
             position: fixed;
             top: -10px;
@@ -112,13 +112,13 @@
         <input type="text" id="codigo-input" placeholder="CÓDIGO" autocomplete="off">
         <br>
         <button onclick="verificarCodigo()">Validar Entrada</button>
-        <div id="mensaje-error" style="margin-top:20px; color:#ff6b6b; min-height: 40px;"></div>
+        <div id="mensaje-error" style="margin-top:20px; color:#ff6b6b; min-height: 40px; font-size: 0.9rem;"></div>
     </div>
 
     <div id="resultado-final">
         <h2>¿Quieres salir conmigo?</h2>
         <img src="FOTO_CON_EL.jpeg" class="foto-pareja" alt="Nosotros">
-        <p style="color: white; font-size: 1.2rem;">Albaricoque.</p>
+        <p style="color: white; font-size: 1.5rem; font-weight: bold; letter-spacing: 2px;">Albaricoque.</p>
     </div>
 
     <script>
@@ -144,16 +144,15 @@
                 final.style.display = 'flex';
                 setTimeout(() => { final.style.opacity = '1'; }, 100);
                 
-                // Iniciar lluvia de corazones
                 setInterval(crearCorazon, 300);
             } else {
                 const frases = [
                     "¡Casi! Pero mi heterosexualidad es más real que ese código.",
                     "Revisa tus notas... ¡tú puedes!",
                     "Código incorrecto, pero tu sonrisa es de 10.",
-                    "¡Error! Sigue buscando, que el premio vale la pena ;)"
-                    "Luego t como los morros"
-                    "Me encantas, pero el código q has metido esta mal :v"
+                    "¡Error! Sigue buscando, que el premio vale la pena ;)",
+                    "Luego te como los morros.",
+                    "Me encantas, pero el código que has metido está mal :v"
                 ];
                 errorDiv.innerText = frases[Math.floor(Math.random() * frases.length)];
                 document.getElementById('codigo-input').value = "";
@@ -162,6 +161,3 @@
     </script>
 </body>
 </html>
-
-
-
